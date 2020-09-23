@@ -13,13 +13,13 @@ public class Customer {
 		super();
 	}
 
-	public Customer(int customerId, String name, String email, String password, List<Invoice> orders) {
+	public Customer(int customerId, String name, String email, String password) {
 		super();
 		this.customerId = customerId;
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.orders = orders;
+		this.orders = null;
 	}
 
 	public int getCustomerId() {
