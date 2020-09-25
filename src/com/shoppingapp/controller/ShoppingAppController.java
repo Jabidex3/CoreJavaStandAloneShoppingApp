@@ -36,6 +36,7 @@ public class ShoppingAppController {
 		}
 	}
 	
+	//log in
 	public boolean loginCustomer(String email, String pw) {
 		for(int i=0;i<customers.size();i++) {
 			if(customers.get(i).getEmail().equals(email)) {
