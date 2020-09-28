@@ -1,11 +1,12 @@
 package com.shoppingapp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
 	private int customerId;
 	private String name;
-	private String email;
+	private String email; //unique
 	private String password;
 	private List<Invoice> orders;
 	
@@ -19,7 +20,7 @@ public class Customer {
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.orders = null;
+		this.orders = new ArrayList<Invoice>();
 	}
 
 	public int getCustomerId() {
@@ -58,8 +59,12 @@ public class Customer {
 		return orders;
 	}
 
-	public void setOrders(List<Invoice> orders) {
-		this.orders = orders;
+	public void addOrder(Invoice order) {
+		this.orders.add(order);
+	}
+	
+	public int orderListLength() {
+		return orders.size();
 	}
 
 	@Override
