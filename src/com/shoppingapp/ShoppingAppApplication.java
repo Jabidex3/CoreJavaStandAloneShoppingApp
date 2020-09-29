@@ -16,7 +16,7 @@ public class ShoppingAppApplication {
 		boolean runApp = true;
 		ShoppingAppController sac = new ShoppingAppController();
 		boolean loggedIn=false;
-		boolean registered = false;
+		boolean justRegistered = false;
 		
 		List<Item> itemsOrdered = new ArrayList<Item>();
 		List<Integer> quantitiesOfItems = new ArrayList<Integer>();
@@ -27,16 +27,7 @@ public class ShoppingAppApplication {
 		String no= "n";
 		
 		while(runApp) {
-			System.out.println("+==========================================+");
-			System.out.println("| Welcome To The Standalone Ecommerce App! |");
-			System.out.println("+==========================================+");
-			System.out.println("| 1.REGISTER                               |");
-			System.out.println("| 2.LOGIN                                  |");
-			System.out.println("| 3.BUY AN ITEM                            |");
-			System.out.println("| 4.RETURN AN ITEM                         |");
-			System.out.println("| 5.EXIT                                   |");
-			System.out.println("+==========================================+");
-			System.out.println("Enter Choice (1, 2, 3, 4 or 5) :");
+			ConsolePrinter.initialOutput();
 			try {
 				int choice = Integer.parseInt(scan.nextLine());
 				if(choice==1) {//REGISTER
@@ -47,19 +38,32 @@ public class ShoppingAppApplication {
 					String cust_name = scan.nextLine();
 					System.out.println("Customer Email: ");
 					String cust_email = scan.nextLine();
-					System.out.println("Password: ");
-					String pw = scan.nextLine();
+					String pw;
+					while(true) {
+						System.out.println("Password: ");
+						pw = scan.nextLine();
+						System.out.println("Confirm Password: ");
+						String cpw = scan.nextLine();
+						if(pw.equals(cpw)==false) {
+							System.out.println("Passwords Entered do not match! Try Again!");
+						}
+						else {
+							break;
+						}
+					}
+					
 					
 					if(sac.addCustomers(cust_name, cust_email, pw)) {
 						System.out.println("Congratulations! You Have Successfully Registered An Account!");
-						registered = true;
+						justRegistered = true;
 					}
 					else {
 						System.out.println("The email you have entered already has an account linked to it! Please Try Again!");
 					}
 				}
 				
-				if(choice==2 || registered) {//LOGIN
+				if(choice==2 || justRegistered) {//LOGIN
+					justRegistered = false;
 					System.out.println("+---------------------+");
 					System.out.println("| Enter Login Details |");
 					System.out.println("+---------------------+");
@@ -70,7 +74,7 @@ public class ShoppingAppApplication {
 					
 					if(sac.loginCustomer(login_email, login_pw)) {
 						loggedIn=true;
-						
+						System.out.println("You have successfully logged in!");
 					}
 					else {
 						System.out.println("Invalid Credentials! Try Again");
@@ -78,15 +82,7 @@ public class ShoppingAppApplication {
 					
 					//successfully logged in
 					while(loggedIn) {
-						System.out.println("+============================+");
-						System.out.println("| What would you like to do? |");
-						System.out.println("+============================+");
-						System.out.println("| 1.BUY AN ITEM              |");
-						System.out.println("| 2.RETURN AN ITEM           |");
-						System.out.println("| 3.VIEW INVOICES            |");
-						System.out.println("| 4.LOG OUT                  |");
-						System.out.println("+============================+");
-						System.out.println("Enter Choice (1, 2, 3 or 4) :");
+						ConsolePrinter.loggedinoutput();
 						
 						try {
 						int userChoice = Integer.parseInt(scan.nextLine());
@@ -221,26 +217,16 @@ public class ShoppingAppApplication {
 								}
 							}
 							
-							
-//							if(itemsOrdered.size()>0) {
-//								System.out.println("Thank you for your order!");
-//								double orderPrice = 0;
-//								for(int i=0;i<itemsOrdered.size();i++) {
-//									orderPrice += itemsOrdered.get(i).getPrice()*quantitiesOfItems.get(i);
-//								}
-//								
-//								sac.addInvoice(new Invoice(sac.getCustId(login_email), sac.getNextOrderPlaceNum(sac.getCustId(login_email)),itemsOrdered, quantitiesOfItems, orderPrice),sac.getCustId(login_email)); //adds invoice to customer invoice list
-//							}
-							
 						}
-						else if(userChoice==2) {//Return
+						else if(userChoice==2) {//Return an item
 							
 						}
 						else if(userChoice==3) {//view invoice list
 							sac.printInvoices(sac.getCustId(login_email));
 						}
-						else if(userChoice==4) {
+						else if(userChoice==4) {//log out
 							loggedIn = false;
+							System.out.println("You have logged out!");
 						}
 						else {
 							System.out.println("Invalid Input! Try Again");
@@ -259,7 +245,7 @@ public class ShoppingAppApplication {
 					System.out.println("This feature is only available to logged in users! Please Login To Return an Item!");
 				}
 				else if(choice==5) {//EXIT
-					System.out.println("Thank You and Goodbye!");
+					System.out.println("Thank You for using this shopping application and Goodbye!");
 					runApp=false;
 				}
 				else if(choice==6) {//testing
