@@ -52,7 +52,6 @@ public class ShoppingAppApplication {
 						}
 					}
 					
-					
 					if(sac.addCustomers(cust_name, cust_email, pw)) {
 						System.out.println("Congratulations! You Have Successfully Registered An Account!");
 						justRegistered = true;
@@ -98,9 +97,8 @@ public class ShoppingAppApplication {
 								ConsolePrinter.buyOutput(1);
 								String itemCode = scan.nextLine();
 								if(sac.checkItemCode(itemCode)) {
-									
 									for(int i=0;i<itemsOrdered.size();i++) {
-										if(itemsOrdered.get(i).getItemCode().equals(itemCode)) {//check if already picked before
+										if(itemsOrdered.get(i).getItemCode().equalsIgnoreCase(itemCode)) {//check if already picked before
 											oldItem=true;
 											while(modifyingQty) {
 												System.out.println("That item is already in your shopping cart! Would you like to modify its quantity?(y/n)");
@@ -131,20 +129,15 @@ public class ShoppingAppApplication {
 															System.out.println("Invalid Quantity! Try Again!");
 														}
 													}
-													
 												}
 												else if(modifyQty.equalsIgnoreCase(no)) {
 													modifyingQty = false;
-													
-													
 												}
 												else {
 													System.out.println("Invalid Choice! Try Again!");
 												}
 											}
-											
 										}
-									
 									}
 									
 									if(modifyingQty==false ) {
@@ -202,15 +195,12 @@ public class ShoppingAppApplication {
 														System.out.println("Invalid Choice! Try Again!");
 													}
 												}
-												
 											}
 											else {
 												System.out.println("Invalid Amount! Try Again!");
 											}
 										}
-										
 									}
-									
 								}
 								else {
 									System.out.println("Invalid Item Code entered! Please Try Again!");

@@ -21,7 +21,7 @@ public class ConsolePrinter {
 		System.out.println("+============================+");
 		System.out.println("| 1.BUY AN ITEM              |");
 		System.out.println("| 2.RETURN AN ITEM           |");
-		System.out.println("| 3.VIEW INVOICES            |");
+		System.out.println("| 3.VIEW ALL INVOICES        |");
 		System.out.println("| 4.LOG OUT                  |");
 		System.out.println("+============================+");
 		System.out.println("Enter Choice (1, 2, 3 or 4) :");

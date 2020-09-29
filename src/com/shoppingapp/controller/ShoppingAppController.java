@@ -79,7 +79,7 @@ public class ShoppingAppController {
 	
 	public boolean checkItemCode(String code) {
 		for(Item i : inventory) {
-			if( i.getItemCode().equals(code)) {
+			if( i.getItemCode().equalsIgnoreCase(code)) {
 				return true;
 			}
 		}
@@ -104,7 +104,7 @@ public class ShoppingAppController {
 	
 	public Item getItemByCode(String code) {
 		for(int i = 0;i<inventory.size();i++) {
-			if(inventory.get(i).getItemCode().equals(code)) {
+			if(inventory.get(i).getItemCode().equalsIgnoreCase(code)) {
 				return inventory.get(i);
 			}
 		}
@@ -147,16 +147,38 @@ public class ShoppingAppController {
 	
 	public void printInvoices(int cust_id) {
 		List<Invoice> orders = new ArrayList<Invoice>();
+		Customer current = null;
 		for(int i =0;i<customers.size();i++) {
 			if(customers.get(i).getCustomerId()==cust_id) {
-//				orders = customers.get(i).getOrders();
-				//System.out.println(customers.get(i).getOrders());
-				System.out.println(customers.get(i));
+				current = customers.get(i);
+				orders = customers.get(i).getOrders();
+//				System.out.println(customers.get(i).getOrders());
+				//System.out.println(customers.get(i));
 			}
 		}
 		
-//		for(Invoice i: orders) {
-//			System.out.println(i);
-//		}
+		if(orders.size()==0) {
+			System.out.println("You have no invoices at this time!");
+		}
+		else {
+			for(int i=0;i<orders.size();i++) {
+				System.out.println("+==============================================================================+");
+				System.out.println("Customer Name : " + current.getName() + "\nDate: "+ orders.get(i).getDate());
+				System.out.println("Invoice no : "+ orders.get(i).getInvoiceId());
+				System.out.println("Order Details:");
+				List<Item> items = orders.get(i).getItems();
+				for(int j=0;j<items.size();j++) {
+					System.out.println(items.get(j)+" ----- Quantity: "+ orders.get(i).getQuantities().get(j));
+				}
+				//System.out.println(orders.get(i).getItems());
+				//System.out.println(orders.get(i).getQuantities());
+				System.out.println();
+				System.out.println("Total Price:" + orders.get(i).getAmount());
+				System.out.println("+===============================================================================+");
+			}
+		}
+	
+		
+		
 	}
 }
