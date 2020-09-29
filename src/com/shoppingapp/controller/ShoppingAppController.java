@@ -1,5 +1,6 @@
 package com.shoppingapp.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +111,7 @@ public class ShoppingAppController {
 		}
 		
 		System.out.println("I shouldnt be here");
-		return new Item(); //will never come here
+		return null; //will never come here
 	}
 	
 	public int getCustId(String email) {
@@ -161,6 +162,7 @@ public class ShoppingAppController {
 			System.out.println("You have no invoices at this time!");
 		}
 		else {
+			System.out.println("INVOICE LIST:");
 			for(int i=0;i<orders.size();i++) {
 				System.out.println("+==============================================================================+");
 				System.out.println("Customer Name : " + current.getName() + "\nDate: "+ orders.get(i).getDate());
@@ -177,8 +179,88 @@ public class ShoppingAppController {
 				System.out.println("+===============================================================================+");
 			}
 		}
+	}
 	
+	
+	public boolean validInvNum(int num, String email) {
+		int customer = getCustId(email);
+		Customer curr = null;
+		for(int i=0;i<customers.size();i++) {
+			if(customers.get(i).getCustomerId()==customer) {
+				curr = customers.get(i);
+				break;
+			}
+		}
 		
+		for(int j=0;j<curr.getOrders().size();j++) {
+			if(curr.getOrders().get(j).getInvoiceId()==num) {
+				return true;
+			}
+		}
 		
+		return false;
+	}
+	
+	public void printSpecificInvoice(int num, int cust_id) {
+		List<Invoice> orders = new ArrayList<Invoice>();
+		Customer current = null;
+		for(int i =0;i<customers.size();i++) {
+			if(customers.get(i).getCustomerId()==cust_id) {
+				current = customers.get(i);
+				orders = customers.get(i).getOrders();
+			}
+		}
+	
+			for(int i=0;i<orders.size();i++) {
+				if(orders.get(i).getInvoiceId()==num) {
+					System.out.println("+==============================================================================+");
+					System.out.println("Customer Name : " + current.getName() + "\nDate: "+ orders.get(i).getDate());
+					System.out.println("Invoice no : "+ orders.get(i).getInvoiceId());
+					System.out.println("Order Details:");
+					List<Item> items = orders.get(i).getItems();
+					for(int j=0;j<items.size();j++) {
+						System.out.println(items.get(j)+" ----- Quantity: "+ orders.get(i).getQuantities().get(j));
+					}
+					System.out.println();
+					System.out.println("Total Price:" + orders.get(i).getAmount());
+					System.out.println("+===============================================================================+");
+				}				
+			}
+		
+	}
+	
+	public boolean checkItemCodeValidityForReturn(String code,int num, int cust_id) {
+		List<Invoice> orders = new ArrayList<Invoice>();
+		Customer current = null;
+		for(int i =0;i<customers.size();i++) {
+			if(customers.get(i).getCustomerId()==cust_id) {
+				current = customers.get(i);
+				orders = customers.get(i).getOrders();
+			}
+		}
+		
+		for(int i=0;i<orders.size();i++) {
+			if(orders.get(i).getInvoiceId()==num) {
+				for(int j=0;j<orders.get(i).getItems().size();j++) {
+					if(orders.get(i).getItems().get(j).getItemCode().equalsIgnoreCase(code)) {
+						//check timestamp
+						LocalDate orderDate = orders.get(i).getDate();
+						LocalDate returnDeadlineDate = orderDate.plusDays(15);
+						LocalDate timeNow = LocalDate.now();
+						if(timeNow.compareTo(returnDeadlineDate)<=0) {
+							//in time
+							double price = orders.get(i).getItems().get(j).getPrice();//price of item
+							double quantityOrdered = orders.get(i).getQuantities().get(j);
+							System.out.println("Thank you for returning this item(s). We will send you a check with : $"+price*quantityOrdered);
+							return true;
+						}
+						else {
+							System.out.println("Sorry! It has been over 15 days since you purchased these items! Cannot return items from this invoice anymore!");
+						}
+					}
+				}
+			}				
+		}
+		return false;
 	}
 }

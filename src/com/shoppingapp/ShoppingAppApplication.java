@@ -209,6 +209,44 @@ public class ShoppingAppApplication {
 							
 						}
 						else if(userChoice==2) {//Return an item
+							while(true) {
+								System.out.println("Please enter the invoice number of the order possessing the item you wish to return: ");
+								System.out.println("Press M to return to Menu");
+								
+									String response =scan.nextLine();
+									if(response.equalsIgnoreCase("M")) {
+										break;
+									}
+									else {
+										try {
+											int invNum = Integer.parseInt(response);
+											if(sac.validInvNum(invNum,login_email)) {
+												//System.out.println("valid inv num");
+												sac.printSpecificInvoice(invNum, sac.getCustId(login_email));
+												while(true) {
+													System.out.println("Please enter the item code of the item you wish to return:");
+													String returnItemCode = scan.nextLine();
+													if(sac.checkItemCodeValidityForReturn(returnItemCode,invNum,sac.getCustId(login_email))) {
+														System.out.println("Would you like to do any more returns?");
+														break;
+													}
+													else {
+														System.out.println("Invalid item code. There is no matching item code in this invoice!");
+													}
+												}
+												
+												
+											}
+											else {
+												System.out.println("There is no matching invoice number associated with this account. Try Again!");
+											}
+										}catch(Exception e) {
+											System.out.println("Invalid value entered! Try Again!");
+										}
+									}
+								
+							}
+							
 							
 						}
 						else if(userChoice==3) {//view invoice list

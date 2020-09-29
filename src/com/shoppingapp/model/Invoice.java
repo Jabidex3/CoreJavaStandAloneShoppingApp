@@ -24,7 +24,8 @@ public class Invoice {
 		this.items = items;
 		this.quantities = quantities;
 		this.amount = amount;
-		this.date = LocalDate.now();  
+		this.date = LocalDate.now();
+		//this.date = LocalDate.now().minusDays(15);  
 	}
 
 //	public Invoice(int customerId, List<Item> items, List<Integer> quantities, double amount) {
