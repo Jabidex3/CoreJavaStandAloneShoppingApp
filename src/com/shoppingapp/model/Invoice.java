@@ -10,12 +10,12 @@ public class Invoice {
 	private List<Integer> quantities;
 	private double amount;
 	private LocalDate date;
+	private boolean returnable;
+	
 	
 	public Invoice() {
 		super();
 	}
-
-	
 
 	public Invoice(int customerId, int invoiceId, List<Item> items, List<Integer> quantities, double amount) {
 		super();
@@ -25,17 +25,9 @@ public class Invoice {
 		this.quantities = quantities;
 		this.amount = amount;
 		this.date = LocalDate.now();
+		this.returnable=true;
 		//this.date = LocalDate.now().minusDays(15);  
 	}
-
-//	public Invoice(int customerId, List<Item> items, List<Integer> quantities, double amount) {
-//		super();
-//		this.customerId = customerId;
-//		this.items = items;
-//		this.quantities = quantities;
-//		this.amount = amount;
-//		this.date = LocalDate.now();  
-//	}
 
 	public int getCustomerId() {
 		return customerId;
@@ -84,6 +76,16 @@ public class Invoice {
 
 	public void setDate(LocalDate date) {
 		this.date = date;
+	}
+	
+	
+
+	public boolean isReturnable() {
+		return returnable;
+	}
+
+	public void setReturnable(boolean returnable) {
+		this.returnable = returnable;
 	}
 
 	@Override

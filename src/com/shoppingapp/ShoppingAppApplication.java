@@ -9,6 +9,11 @@ import com.shoppingapp.model.Invoice;
 import com.shoppingapp.model.Item;
 import com.shoppingapp.utility.ConsolePrinter;
 
+/***
+ * Shopping Application
+ * @author Jabid Methun
+ *
+ */
 public class ShoppingAppApplication {
 
 	public static void main(String[] args) {
@@ -220,7 +225,7 @@ public class ShoppingAppApplication {
 									else {
 										try {
 											int invNum = Integer.parseInt(response);
-											if(sac.validInvNum(invNum,login_email)) {
+											if(sac.validInvNum(invNum,login_email)==1) {
 												//System.out.println("valid inv num");
 												sac.printSpecificInvoice(invNum, sac.getCustId(login_email));
 												while(true) {
@@ -237,7 +242,10 @@ public class ShoppingAppApplication {
 												
 												
 											}
-											else {
+											else if(sac.validInvNum(invNum,login_email)==2) {
+												System.out.println("You have already returned items from this invoice! you cannot return any more items from it!");
+											}
+											else{
 												System.out.println("There is no matching invoice number associated with this account. Try Again!");
 											}
 										}catch(Exception e) {

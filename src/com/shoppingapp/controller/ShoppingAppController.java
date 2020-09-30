@@ -12,7 +12,7 @@ public class ShoppingAppController {
 
 	private ArrayList<Customer> customers;
 	private ArrayList<Item> inventory;
-	private int currentUserIndex = 0;
+	//private int currentUserIndex = 0;
 	
 	public ShoppingAppController() {
 		customers = new ArrayList<Customer>();
@@ -70,7 +70,8 @@ public class ShoppingAppController {
 //		for(Item i : inventory) {
 //			System.out.println(i);
 //		}
-		//System.out.println("+===============================================+");
+		System.out.println("       ***        ITEM LIST         ***        ");
+		System.out.println("===============================================");
 		System.out.println("Item              Item Code              Price ");
 		System.out.println("===============================================");
 		for(int i =0;i<inventory.size();i++) {
@@ -182,7 +183,7 @@ public class ShoppingAppController {
 	}
 	
 	
-	public boolean validInvNum(int num, String email) {
+	public int validInvNum(int num, String email) {
 		int customer = getCustId(email);
 		Customer curr = null;
 		for(int i=0;i<customers.size();i++) {
@@ -192,13 +193,21 @@ public class ShoppingAppController {
 			}
 		}
 		
+		
 		for(int j=0;j<curr.getOrders().size();j++) {
 			if(curr.getOrders().get(j).getInvoiceId()==num) {
-				return true;
+				if(curr.getOrders().get(j).isReturnable()) {//returnable is true
+					return 1;
+				}
+				else {//returnable is false
+					return 2;
+				}
+				
 			}
 		}
 		
-		return false;
+		//invallid invoice number entered
+		return 3;
 	}
 	
 	public void printSpecificInvoice(int num, int cust_id) {
@@ -252,6 +261,7 @@ public class ShoppingAppController {
 							double price = orders.get(i).getItems().get(j).getPrice();//price of item
 							double quantityOrdered = orders.get(i).getQuantities().get(j);
 							System.out.println("Thank you for returning this item(s). We will send you a check with : $"+price*quantityOrdered);
+							orders.get(i).setReturnable(false);
 							return true;
 						}
 						else {
